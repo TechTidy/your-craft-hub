@@ -36,6 +36,17 @@
   --font-h:     'Montserrat', sans-serif;
   --font-b:     'Open Sans', sans-serif;
 
+  /* ── FLUID RESPONSIVE TOKENS ──
+     Coherent breakpoint ladder: 480 / 768 / 1024 / 1280.
+     These clamp() tokens make spacing + the container scale continuously,
+     so most spacing no longer needs per-breakpoint overrides. */
+  --container-max: 1160px;                  /* mockup cap; lifts at >=1600px */
+  --gutter:        clamp(16px, 4vw, 24px);  /* container side padding */
+  --section-y:     clamp(56px, 8vw, 90px);  /* standard section padding */
+  --section-y-sm:  clamp(52px, 7vw, 80px);  /* dual-cta */
+  --section-y-xs:  clamp(44px, 6vw, 64px);  /* service-area */
+  --grid-gap-top:  clamp(32px, 4.5vw, 52px);/* space above section grids */
+
   font-family: var(--font-b);
   color: var(--text-dark);
   background: var(--white);
@@ -48,8 +59,12 @@
 .landing img { max-width: 100%; }
 
 /* ── LAYOUT ── */
-.landing .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+.landing .container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--gutter); }
 .landing .text-center { text-align: center; }
+
+/* Large-desktop: lift the container so content isn't marooned on very wide
+   screens. 1280/1440 stay identical to the mockup; only >=1600px changes. */
+@media (min-width: 1600px) { .landing { --container-max: 1320px; } }
 
 /* ── TAGS & TITLES ── */
 .landing .tag {
@@ -70,7 +85,7 @@
   line-height: 1.18;
 }
 .landing .sec-title span { color: var(--blue); }
-.landing .sec-sub { font-size: 15px; color: var(--text-mid); max-width: 580px; margin: 12px auto 0; }
+.landing .sec-sub { font-size: clamp(14px, 1.4vw, 15px); color: var(--text-mid); max-width: 580px; margin: 12px auto 0; }
 
 /* ── BUTTONS ── */
 .landing .btn-primary {
@@ -113,12 +128,15 @@
   background: var(--blue); padding: 11px 16px;
   gap: 10px; box-shadow: 0 -3px 16px rgba(59,91,245,.25);
 }
-@media(max-width:767px){ .landing .mobile-bar{ display:flex; } }
+/* Sticky bar + hamburger take over across the whole tablet band (<=900px)
+   so the desktop nav links + phone CTA never crowd the logo on portrait
+   tablets. Nav.tsx already renders both variants; CSS gates visibility. */
+@media(max-width:900px){ .landing .mobile-bar{ display:flex; } }
 .landing .mobile-bar a { flex: 1; justify-content: center; font-size: 13px; min-height: 44px; padding: 12px; }
 /* Reserve space so the fixed mobile bar never covers content/footer.
    Must exceed the bar's rendered height (11px×2 vertical padding + 44px min
    tap target ≈ 68px) plus a small safety margin. */
-@media(max-width:767px){ .landing { padding-bottom: 80px; } }
+@media(max-width:900px){ .landing { padding-bottom: 80px; } }
 
 /* ═══════════════════════
    NAVBAR
@@ -137,11 +155,11 @@
 .landing .logo span { font-family: var(--font-h); font-size: 19px; font-weight: 800; color: var(--white); }
 .landing .logo-img { height: 46px; width: auto; display: block; }
 .landing .footer-logo-img { height: 52px; width: auto; }
-@media(max-width:767px){ .landing .logo-img { height: 34px; } }
+@media(max-width:900px){ .landing .logo-img { height: 34px; } }
 .landing .nav-links { display: flex; gap: 28px; list-style: none; }
 .landing .nav-links a { font-family: var(--font-h); font-size: 13px; font-weight: 600; color: rgba(255,255,255,.82); text-decoration: none; letter-spacing: .02em; transition: color .2s; }
 .landing .nav-links a:hover { color: var(--white); }
-@media(max-width:767px){ .landing .nav-links{ display:none; } }
+@media(max-width:900px){ .landing .nav-links{ display:none; } }
 
 /* ── HAMBURGER TOGGLE (mobile only) ── */
 .landing .nav-toggle {
@@ -158,7 +176,7 @@
 .landing .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1){ transform: translateY(7px) rotate(45deg); }
 .landing .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2){ opacity: 0; }
 .landing .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
-@media(max-width:767px){
+@media(max-width:900px){
   .landing .nav-toggle{ display:flex; }
   .landing .nav { padding: 12px 0; }
   .landing .nav .btn-primary{ display:none; }
@@ -172,7 +190,7 @@
   gap: 28px; padding: 28px 24px;
   background: var(--blue);
 }
-@media(max-width:767px){
+@media(max-width:900px){
   .landing .mobile-menu.is-open{ display:flex; }
 }
 .landing .mobile-menu-links {
@@ -211,13 +229,17 @@
 .landing .hero-inner {
   position: relative; z-index: 2;
   display: grid;
-  grid-template-columns: 1fr 420px;
-  gap: 52px;
+  /* Fluid form column: keeps the mockup's 420px on wide desktop, shrinks
+     gracefully toward the tablet stack instead of locking to 420px. */
+  grid-template-columns: 1fr clamp(340px, 32vw, 420px);
+  gap: clamp(32px, 4vw, 52px);
   align-items: center;
-  padding: 130px 0 80px;
+  padding: clamp(96px, 11vh, 130px) 0 clamp(48px, 7vh, 80px);
   width: 100%;
 }
-@media(max-width:960px){ .landing .hero-inner{ grid-template-columns:1fr; gap:36px; padding:110px 0 60px; } }
+/* Real 2-col hero survives on landscape tablets; stacks only at <=900px
+   (same band as the hamburger nav). */
+@media(max-width:900px){ .landing .hero-inner{ grid-template-columns:1fr; gap:36px; } }
 
 /* LEFT */
 .landing .hero-left {}
@@ -258,10 +280,15 @@
 .landing .hero-form-card {
   background: var(--white);
   border-radius: 12px;
-  padding: 34px 30px 36px;
+  padding: clamp(26px, 3vw, 34px) clamp(20px, 2.4vw, 30px) clamp(28px, 3vw, 36px);
   box-shadow: 0 20px 60px rgba(0,0,0,.30);
   border-top: 4px solid var(--blue);
+  overflow: hidden;
 }
+/* Cloudflare Turnstile renders a fixed 300px iframe; cap it so it can never
+   overflow the fluid form column at any width. */
+.landing .hero-form-card .cf-turnstile,
+.landing .hero-form-card iframe[src*="challenges.cloudflare.com"] { max-width: 100%; }
 .landing .hero-form-card h3 {
   font-family: var(--font-h); font-size: 18px; font-weight: 800;
   color: var(--text-dark); margin-bottom: 6px;
@@ -318,8 +345,8 @@
 /* ═══════════════════════
    SERVICES (2-COL EQUAL)
 ═══════════════════════ */
-.landing .services { padding: 90px 0; background: var(--white); }
-.landing .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 52px; }
+.landing .services { padding: var(--section-y) 0; background: var(--white); }
+.landing .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-top: var(--grid-gap-top); }
 @media(max-width:767px){ .landing .services-grid{ grid-template-columns:1fr; } }
 
 .landing .svc-card {
@@ -347,9 +374,9 @@
   margin-bottom: 14px;
 }
 .landing .svc-icon svg { width: 22px; height: 22px; }
-.landing .svc-title { font-family: var(--font-h); font-size: 19px; font-weight: 800; margin-bottom: 9px; }
+.landing .svc-title { font-family: var(--font-h); font-size: clamp(17px, 1.6vw, 19px); font-weight: 800; margin-bottom: 9px; }
 .landing .svc-title span { color: var(--blue); }
-.landing .svc-desc { font-size: 14px; color: var(--text-mid); margin-bottom: 18px; line-height: 1.62; }
+.landing .svc-desc { font-size: clamp(13px, 1.2vw, 14px); color: var(--text-mid); margin-bottom: 18px; line-height: 1.62; }
 .landing .svc-list { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 22px; }
 .landing .svc-list li {
   display: flex; align-items: flex-start; gap: 8px;
@@ -365,8 +392,11 @@
 /* ═══════════════════════
    WHY US
 ═══════════════════════ */
-.landing .why-us { padding: 90px 0; background: var(--bg-light); }
-.landing .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 22px; margin-top: 52px; }
+.landing .why-us { padding: var(--section-y) 0; background: var(--bg-light); }
+/* Explicit tiers replace auto-fit guesswork: 4 -> 2 (tablet) -> 1 (phone). */
+.landing .why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: var(--grid-gap-top); }
+@media(max-width:1023px){ .landing .why-grid{ grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+@media(max-width:479px){ .landing .why-grid{ grid-template-columns: 1fr; } }
 .landing .why-card {
   background: var(--white); border-radius: 10px; padding: 28px 22px;
   border: 1px solid var(--border); box-shadow: var(--shadow-sm); text-align: center;
@@ -384,8 +414,8 @@
 /* ═══════════════════════
    HOW IT WORKS
 ═══════════════════════ */
-.landing .how { padding: 90px 0; background: var(--white); }
-.landing .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-top: 52px; position: relative; }
+.landing .how { padding: var(--section-y) 0; background: var(--white); }
+.landing .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-top: var(--grid-gap-top); position: relative; }
 .landing .steps::before {
   content: ''; position: absolute;
   top: 36px; left: calc(16.6% + 20px); right: calc(16.6% + 20px);
@@ -395,17 +425,17 @@
 .landing .step { text-align: center; position: relative; z-index: 1; }
 .landing .step-num {
   width: 68px; height: 68px; background: var(--blue); color: var(--white);
-  font-family: var(--font-h); font-size: 24px; font-weight: 900; border-radius: 50%;
+  font-family: var(--font-h); font-size: clamp(20px, 2.2vw, 24px); font-weight: 900; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 18px; box-shadow: 0 6px 20px rgba(59,91,245,.28);
 }
-.landing .step h3 { font-family: var(--font-h); font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+.landing .step h3 { font-family: var(--font-h); font-size: clamp(15px, 1.4vw, 16px); font-weight: 800; margin-bottom: 8px; }
 .landing .step p { font-size: 13.5px; color: var(--text-mid); line-height: 1.6; }
 
 /* ═══════════════════════
    SERVICE AREA
 ═══════════════════════ */
-.landing .service-area { padding: 64px 0; background: var(--bg-light); }
+.landing .service-area { padding: var(--section-y-xs) 0; background: var(--bg-light); }
 .landing .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 28px; }
 .landing .chip {
   display: inline-flex; align-items: center; gap: 6px;
@@ -419,7 +449,7 @@
 /* ═══════════════════════
    DUAL CTA SECTION
 ═══════════════════════ */
-.landing .dual-cta { background: var(--blue); padding: 80px 0; position: relative; overflow: hidden; }
+.landing .dual-cta { background: var(--blue); padding: var(--section-y-sm) 0; position: relative; overflow: hidden; }
 .landing .dual-cta::before {
   content: ''; position: absolute; top: -90px; right: -90px;
   width: 360px; height: 360px; background: rgba(255,255,255,.07); border-radius: 50%;
@@ -433,14 +463,17 @@
   font-family: var(--font-h); font-size: clamp(24px, 3.8vw, 42px); font-weight: 900;
   color: var(--white); line-height: 1.15; margin-bottom: 14px;
 }
-.landing .dual-cta p { font-size: 15px; color: rgba(255,255,255,.80); max-width: 520px; margin: 0 auto 32px; }
+.landing .dual-cta p { font-size: clamp(14px, 1.4vw, 15px); color: rgba(255,255,255,.80); max-width: 520px; margin: 0 auto 32px; }
 .landing .dual-cta-btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
 
 /* ═══════════════════════
    REVIEWS
 ═══════════════════════ */
-.landing .reviews { padding: 90px 0; background: var(--bg-light); }
-.landing .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; margin-top: 52px; }
+.landing .reviews { padding: var(--section-y) 0; background: var(--bg-light); }
+/* Explicit tiers replace auto-fit (which forced overflow at 320px): 3 -> 2 -> 1. */
+.landing .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: var(--grid-gap-top); }
+@media(max-width:1023px){ .landing .reviews-grid{ grid-template-columns: repeat(2, 1fr); } }
+@media(max-width:767px){ .landing .reviews-grid{ grid-template-columns: 1fr; } }
 .landing .rev-card {
   background: var(--white); border: 1px solid var(--border); border-radius: 10px;
   padding: 26px; box-shadow: var(--shadow-sm); position: relative;
@@ -459,8 +492,8 @@
 /* ═══════════════════════
    FAQ
 ═══════════════════════ */
-.landing .faq { padding: 90px 0; background: var(--white); }
-.landing .faq-list { max-width: 740px; margin: 50px auto 0; display: flex; flex-direction: column; gap: 12px; }
+.landing .faq { padding: var(--section-y) 0; background: var(--white); }
+.landing .faq-list { max-width: 740px; margin: clamp(28px, 4.5vw, 50px) auto 0; display: flex; flex-direction: column; gap: 12px; }
 .landing .faq-item { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-sm); }
 .landing .faq-q {
   width: 100%; text-align: left; background: var(--white); border: none;
@@ -484,7 +517,7 @@
 /* ═══════════════════════
    FINAL CTA
 ═══════════════════════ */
-.landing .final-cta { background: var(--bg-dark); padding: 90px 0; text-align: center; position: relative; overflow: hidden; }
+.landing .final-cta { background: var(--bg-dark); padding: var(--section-y) 0; text-align: center; position: relative; overflow: hidden; }
 .landing .final-cta::before {
   content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
   width: 550px; height: 550px;
@@ -492,7 +525,7 @@
 }
 .landing .final-cta h2 { font-family: var(--font-h); font-size: clamp(26px, 4.5vw, 46px); font-weight: 900; color: var(--white); line-height: 1.15; margin-bottom: 14px; }
 .landing .final-cta h2 span { color: var(--blue); }
-.landing .final-cta p { font-size: 16px; color: rgba(255,255,255,.70); max-width: 500px; margin: 0 auto 34px; }
+.landing .final-cta p { font-size: clamp(15px, 1.6vw, 16px); color: rgba(255,255,255,.70); max-width: 500px; margin: 0 auto 34px; }
 .landing .final-cta-btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; position: relative; z-index: 2; }
 
 /* ═══════════════════════
@@ -503,14 +536,24 @@
 .landing .footer-copy { font-size: 12.5px; color: rgba(255,255,255,.40); }
 .landing .footer-brand { font-family: var(--font-h); font-size: 17px; font-weight: 800; color: var(--white); }
 
-/* ═══════════════════════
-   MOBILE REFINEMENTS (<=767px; additive, desktop unchanged)
-═══════════════════════ */
-@media (max-width: 767px) {
-  /* HERO + QUOTE FORM */
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE LADDER — 480 / 768 / 1024 / 1280 (+900 nav band)
+   Section padding, container gutter, grid gaps and most typography
+   scale continuously via clamp() tokens above, so the media queries
+   below only carry true LAYOUT changes and small-screen refinements.
+   The desktop mockup (>=1280px) is unchanged.
+═══════════════════════════════════════════════════════════ */
+
+/* ── TABLET / STACKED HERO BAND (<=900px) ── */
+@media (max-width: 900px) {
   .landing .hero { min-height: auto; }
-  .landing .hero-inner { padding: 96px 0 48px; gap: 28px; }
-  .landing .hero-left h1 { font-size: 28px; line-height: 1.14; }
+  .landing .hero-inner { gap: 36px; }
+}
+
+/* ── PHONE (<=767px; additive, desktop unchanged) ── */
+@media (max-width: 767px) {
+  /* HERO */
+  .landing .hero-inner { gap: 28px; }
   .landing .hero-sub { margin-bottom: 24px; }
 
   .landing .hero-ctas { flex-direction: column; gap: 10px; }
@@ -520,32 +563,11 @@
     padding: 14px 20px; font-size: 15px;
   }
 
-  .landing .hero-form-card { padding: 26px 20px 28px; border-radius: 10px; overflow: hidden; }
-
   /* iOS: >=16px prevents focus auto-zoom */
   .landing .form-field input,
   .landing .form-field select { font-size: 16px; padding: 12px 14px; }
 
   .landing #quote-sms-optin { width: 18px; height: 18px; }
-
-  .landing .hero-form-card .cf-turnstile,
-  .landing .hero-form-card iframe[src*="challenges.cloudflare.com"] { max-width: 100%; }
-
-  /* SECTION PADDING / SPACING */
-  .landing .services,
-  .landing .why-us,
-  .landing .how,
-  .landing .reviews,
-  .landing .faq,
-  .landing .final-cta { padding: 56px 0; }
-  .landing .dual-cta { padding: 52px 0; }
-  .landing .service-area { padding: 44px 0; }
-
-  .landing .services-grid,
-  .landing .why-grid,
-  .landing .steps,
-  .landing .reviews-grid { margin-top: 32px; }
-  .landing .faq-list { margin-top: 28px; }
 
   /* CARDS */
   .landing .svc-body { padding: 22px 20px 26px; }
@@ -560,4 +582,19 @@
   /* FOOTER */
   .landing .footer-inner { flex-direction: column; justify-content: center; text-align: center; gap: 12px; }
   .landing footer { padding: 32px 0 28px; }
+}
+
+/* ── SMALL PHONE (<=480px) ── */
+@media (max-width: 480px) {
+  /* Tighter step badge for the stacked layout. */
+  .landing .step-num { width: 60px; height: 60px; }
+}
+
+/* ── EXTRA-SMALL PHONE (<=360px) ── */
+@media (max-width: 360px) {
+  /* The hero <h1> uses forced <br> tags; drop the size a touch so the
+     longest line ("Water Extraction") never clips at 320px. */
+  .landing .hero-left h1 { font-size: 25px; }
+  /* Scale the fixed-300px Turnstile widget so it fits the narrow card. */
+  .landing .hero-form-card .cf-turnstile { transform: scale(.85); transform-origin: left center; }
 }

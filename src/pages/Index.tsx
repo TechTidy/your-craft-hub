@@ -1,23 +1,50 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import Services from "@/components/Services";
-// import Portfolio from "@/components/Portfolio";
-import Reviews from "@/components/Reviews";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import { useEffect } from "react";
+import "@/components/landing/landing.css";
+import Nav from "@/components/landing/Nav";
+import Hero from "@/components/landing/Hero";
+import TrustBar from "@/components/landing/TrustBar";
+import Services from "@/components/landing/Services";
+import WhyUs from "@/components/landing/WhyUs";
+import HowItWorks from "@/components/landing/HowItWorks";
+import DualCTA from "@/components/landing/DualCTA";
+import ServiceArea from "@/components/landing/ServiceArea";
+import Reviews from "@/components/landing/Reviews";
+import Faq from "@/components/landing/Faq";
+import FinalCTA from "@/components/landing/FinalCTA";
+import Footer from "@/components/landing/Footer";
 
 const Index = () => {
+  useEffect(() => {
+    const scrollToHash = () => {
+      const { hash } = window.location;
+      if (!hash) return;
+      const el = document.querySelector(hash);
+      el?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    const timer = setTimeout(scrollToHash, 300);
+    window.addEventListener("hashchange", scrollToHash);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("hashchange", scrollToHash);
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen">
-      <Navbar />
+    <div className="landing min-h-screen">
+      <Nav />
       <Hero />
+      <TrustBar />
       <Services />
-      {/* <Portfolio /> */}
+      <WhyUs />
+      <HowItWorks />
+      <DualCTA />
+      <ServiceArea />
       <Reviews />
-      <Contact />
+      <Faq />
+      <FinalCTA />
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 };

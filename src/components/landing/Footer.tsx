@@ -1,9 +1,10 @@
+import logo from "@/assets/handshands-logo.png";
 import { BUSINESS } from "@/components/landing/data";
 
 /**
  * Footer for the Hands-Hands landing page.
  *
- * Dark band with the brand logo (logo-box mark + wordmark), the real contact
+ * Dark band with the brand logo (real Hands-Hands wordmark), the real contact
  * data (phone tel-link, email, Colorado), and the copyright line.
  *
  * Real business data (phone, tel link, email, location) comes from the shared
@@ -16,22 +17,7 @@ export default function Footer() {
       <div className="container">
         <div className="footer-inner">
           <a href="#" className="logo">
-            <span className="logo-box">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                <path d="M2 17l10 5 10-5" />
-                <path d="M2 12l10 5 10-5" />
-              </svg>
-            </span>
-            <span className="footer-brand">Hands Hands</span>
+            <img src={logo} alt="Hands-Hands" className="footer-logo-img" />
           </a>
 
           <p className="footer-copy">

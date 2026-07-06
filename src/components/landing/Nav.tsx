@@ -1,5 +1,7 @@
+import { useState } from "react";
 import type { MouseEvent } from "react";
 
+import logo from "@/assets/handshands-logo.png";
 import { BUSINESS } from "@/components/landing/data";
 
 /**
@@ -48,6 +50,10 @@ function handleAnchorClick(
 }
 
 export default function Nav() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <>
       {/* MOBILE STICKY BAR */}
@@ -101,22 +107,7 @@ export default function Nav() {
               className="logo"
               onClick={(event) => handleAnchorClick(event, "#")}
             >
-              <span className="logo-box">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                  <path d="M2 17l10 5 10-5" />
-                  <path d="M2 12l10 5 10-5" />
-                </svg>
-              </span>
-              <span>Hands Hands</span>
+              <img src={logo} alt="Hands-Hands" className="logo-img" />
             </a>
 
             <ul className="nav-links">
@@ -152,9 +143,60 @@ export default function Nav() {
               </svg>
               {BUSINESS.phone}
             </a>
+
+            <button
+              type="button"
+              className="nav-toggle"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <span className="nav-toggle-bar" />
+              <span className="nav-toggle-bar" />
+              <span className="nav-toggle-bar" />
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* MOBILE MENU OVERLAY */}
+      <div
+        id="mobile-menu"
+        className={`mobile-menu${menuOpen ? " is-open" : ""}`}
+        hidden={!menuOpen}
+      >
+        <ul className="mobile-menu-links">
+          {NAV_LINKS.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                onClick={(event) => {
+                  handleAnchorClick(event, link.href);
+                  closeMenu();
+                }}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div className="mobile-menu-cta">
+          <a href={BUSINESS.telHref} className="btn-white" onClick={closeMenu}>
+            Call {BUSINESS.phone}
+          </a>
+          <a
+            href="#estimate"
+            className="btn-outline-dark"
+            onClick={(event) => {
+              handleAnchorClick(event, "#estimate");
+              closeMenu();
+            }}
+          >
+            Free Quote
+          </a>
+        </div>
+      </div>
     </>
   );
 }

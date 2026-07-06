@@ -41,8 +41,11 @@
   background: var(--white);
   font-size: 16px;
   line-height: 1.6;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 .landing *, .landing *::before, .landing *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.landing img { max-width: 100%; }
 
 /* ── LAYOUT ── */
 .landing .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
@@ -111,7 +114,11 @@
   gap: 10px; box-shadow: 0 -3px 16px rgba(59,91,245,.25);
 }
 @media(max-width:767px){ .landing .mobile-bar{ display:flex; } }
-.landing .mobile-bar a { flex: 1; justify-content: center; font-size: 13px; padding: 11px 12px; }
+.landing .mobile-bar a { flex: 1; justify-content: center; font-size: 13px; min-height: 44px; padding: 12px; }
+/* Reserve space so the fixed mobile bar never covers content/footer.
+   Must exceed the bar's rendered height (11px×2 vertical padding + 44px min
+   tap target ≈ 68px) plus a small safety margin. */
+@media(max-width:767px){ .landing { padding-bottom: 80px; } }
 
 /* ═══════════════════════
    NAVBAR
@@ -128,10 +135,61 @@
 }
 .landing .logo-box svg { width: 20px; height: 20px; fill: white; }
 .landing .logo span { font-family: var(--font-h); font-size: 19px; font-weight: 800; color: var(--white); }
+.landing .logo-img { height: 46px; width: auto; display: block; }
+.landing .footer-logo-img { height: 52px; width: auto; }
+@media(max-width:767px){ .landing .logo-img { height: 34px; } }
 .landing .nav-links { display: flex; gap: 28px; list-style: none; }
 .landing .nav-links a { font-family: var(--font-h); font-size: 13px; font-weight: 600; color: rgba(255,255,255,.82); text-decoration: none; letter-spacing: .02em; transition: color .2s; }
 .landing .nav-links a:hover { color: var(--white); }
 @media(max-width:767px){ .landing .nav-links{ display:none; } }
+
+/* ── HAMBURGER TOGGLE (mobile only) ── */
+.landing .nav-toggle {
+  display: none;
+  width: 44px; height: 44px;
+  padding: 10px; margin: -10px;   /* keeps 44px tap target, no layout shift */
+  background: transparent; border: 0; cursor: pointer;
+  flex-direction: column; justify-content: center; gap: 5px;
+}
+.landing .nav-toggle-bar {
+  display: block; width: 24px; height: 2px; border-radius: 2px;
+  background: var(--white); transition: transform .25s, opacity .2s;
+}
+.landing .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+.landing .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2){ opacity: 0; }
+.landing .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+@media(max-width:767px){
+  .landing .nav-toggle{ display:flex; }
+  .landing .nav { padding: 12px 0; }
+  .landing .nav .btn-primary{ display:none; }
+}
+
+/* ── MOBILE MENU OVERLAY ── */
+.landing .mobile-menu {
+  display: none;
+  position: fixed; inset: 0; z-index: 200;
+  flex-direction: column; justify-content: center; align-items: stretch;
+  gap: 28px; padding: 28px 24px;
+  background: var(--blue);
+}
+@media(max-width:767px){
+  .landing .mobile-menu.is-open{ display:flex; }
+}
+.landing .mobile-menu-links {
+  list-style: none; display: flex; flex-direction: column;
+  gap: 4px; text-align: center;
+}
+.landing .mobile-menu-links a {
+  display: block; padding: 14px;           /* >=44px tap target */
+  font-family: var(--font-h); font-size: 18px; font-weight: 700;
+  color: var(--white); text-decoration: none;
+}
+.landing .mobile-menu-cta {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.landing .mobile-menu-cta a {
+  justify-content: center; padding: 14px; font-size: 15px;
+}
 
 /* ═══════════════════════
    HERO — LEFT + RIGHT FORM
@@ -444,3 +502,62 @@
 .landing .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; }
 .landing .footer-copy { font-size: 12.5px; color: rgba(255,255,255,.40); }
 .landing .footer-brand { font-family: var(--font-h); font-size: 17px; font-weight: 800; color: var(--white); }
+
+/* ═══════════════════════
+   MOBILE REFINEMENTS (<=767px; additive, desktop unchanged)
+═══════════════════════ */
+@media (max-width: 767px) {
+  /* HERO + QUOTE FORM */
+  .landing .hero { min-height: auto; }
+  .landing .hero-inner { padding: 96px 0 48px; gap: 28px; }
+  .landing .hero-left h1 { font-size: 28px; line-height: 1.14; }
+  .landing .hero-sub { margin-bottom: 24px; }
+
+  .landing .hero-ctas { flex-direction: column; gap: 10px; }
+  .landing .hero-ctas .btn-white,
+  .landing .hero-ctas .btn-outline-dark {
+    width: 100%; justify-content: center;
+    padding: 14px 20px; font-size: 15px;
+  }
+
+  .landing .hero-form-card { padding: 26px 20px 28px; border-radius: 10px; overflow: hidden; }
+
+  /* iOS: >=16px prevents focus auto-zoom */
+  .landing .form-field input,
+  .landing .form-field select { font-size: 16px; padding: 12px 14px; }
+
+  .landing #quote-sms-optin { width: 18px; height: 18px; }
+
+  .landing .hero-form-card .cf-turnstile,
+  .landing .hero-form-card iframe[src*="challenges.cloudflare.com"] { max-width: 100%; }
+
+  /* SECTION PADDING / SPACING */
+  .landing .services,
+  .landing .why-us,
+  .landing .how,
+  .landing .reviews,
+  .landing .faq,
+  .landing .final-cta { padding: 56px 0; }
+  .landing .dual-cta { padding: 52px 0; }
+  .landing .service-area { padding: 44px 0; }
+
+  .landing .services-grid,
+  .landing .why-grid,
+  .landing .steps,
+  .landing .reviews-grid { margin-top: 32px; }
+  .landing .faq-list { margin-top: 28px; }
+
+  /* CARDS */
+  .landing .svc-body { padding: 22px 20px 26px; }
+  .landing .svc-img-wrap img { height: 180px; }
+  .landing .rev-card { padding: 22px 20px; }
+  .landing .why-card { padding: 24px 20px; }
+
+  /* FAQ */
+  .landing .faq-q { padding: 16px 16px; font-size: 13.5px; }
+  .landing .faq-a { padding: 0 16px 16px; }
+
+  /* FOOTER */
+  .landing .footer-inner { flex-direction: column; justify-content: center; text-align: center; gap: 12px; }
+  .landing footer { padding: 32px 0 28px; }
+}

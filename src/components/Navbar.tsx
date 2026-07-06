@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logoColor from "@/assets/logo-simplified-color.svg";
-import logoWhite from "@/assets/logo-simplified-white.svg";
+import handshandsLogo from "@/assets/handshands-logo.png";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,13 +47,29 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <div className="flex items-center">
-            <img 
-              src={isScrolled ? logoColor : logoWhite} 
-              alt="Hands-Hands" 
-              className="h-12 md:h-14 w-auto transition-all duration-300"
+          <a
+            href="#inicio"
+            onClick={(e) => handleNavClick(e, "inicio")}
+            className="flex items-center gap-3"
+            aria-label="Hands-Hands - Carpet Cleaning & Water Extraction"
+          >
+            <img
+              src={handshandsLogo}
+              alt="Hands-Hands"
+              className={`h-9 md:h-11 w-auto transition-all duration-300 ${
+                isScrolled ? "[filter:invert(1)]" : ""
+              }`}
             />
-          </div>
+            <span
+              className={`hidden lg:inline text-xs font-medium tracking-wide border-l pl-3 transition-colors duration-300 ${
+                isScrolled
+                  ? "text-muted-foreground border-border"
+                  : "text-white/90 border-white/40"
+              }`}
+            >
+              Carpet Cleaning &amp; Water Extraction
+            </span>
+          </a>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">

@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-bg.jpg";
-import logoWhite from "@/assets/logo-white.svg";
+import logoColor from "@/assets/logo-color.svg";
 
 const steps = [
   {
@@ -43,7 +43,7 @@ const ThankYou = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-20">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-16 px-4">
       {/* Background image with overlay — same treatment as the site Hero */}
       <div className="absolute inset-0 z-0">
         <img
@@ -52,49 +52,44 @@ const ThankYou = () => {
           aria-hidden="true"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-foreground/90 via-foreground/80 to-foreground/70" />
+        <div className="absolute inset-0 bg-gradient-to-br from-foreground/90 via-foreground/85 to-foreground/80" />
       </div>
 
-      {/* Content */}
-      <div className="container relative z-10 mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center space-y-8 animate-fade-in">
+      {/* White content card floating over the hero background */}
+      <div className="relative z-10 w-full max-w-2xl">
+        <div className="rounded-2xl bg-card border border-border/50 shadow-2xl p-8 md:p-12 text-center space-y-7 animate-fade-in">
           <img
-            src={logoWhite}
+            src={logoColor}
             alt="Hands-Hands"
-            className="h-12 md:h-14 w-auto mx-auto"
+            className="h-11 md:h-12 w-auto mx-auto"
           />
 
-          <div className="inline-flex p-5 rounded-full bg-primary/15 ring-1 ring-primary/30 backdrop-blur-sm">
-            <CheckCircle2 className="h-14 w-14 text-primary" />
+          <div className="inline-flex p-4 rounded-full bg-primary/10 text-primary ring-1 ring-primary/20">
+            <CheckCircle2 className="h-12 w-12" />
           </div>
 
-          <div className="space-y-4">
-            <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
+          <div className="space-y-3">
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight">
               Thank{" "}
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 You!
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-white/90 max-w-xl mx-auto">
+            <p className="text-muted-foreground text-base md:text-lg max-w-md mx-auto">
               Your request was received. Our team will contact you shortly to
               confirm the details and schedule your service.
             </p>
           </div>
 
-          {/* Primary CTA (call) + secondary (home) — same button styles as Hero */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" asChild className="group shadow-lg w-full sm:w-auto">
+          {/* Primary CTA (call) + secondary (home) */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+            <Button size="lg" asChild className="group shadow-md w-full sm:w-auto">
               <a href="tel:+17202557466">
                 <Phone className="mr-2 h-4 w-4" />
                 Call +1 (720) 255-7466
               </a>
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              asChild
-              className="w-full sm:w-auto bg-transparent text-white border-white/70 hover:bg-white hover:text-foreground"
-            >
+            <Button size="lg" variant="outline" asChild className="w-full sm:w-auto">
               <Link to="/">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Home
@@ -103,28 +98,26 @@ const ThankYou = () => {
           </div>
 
           {/* What happens next */}
-          <div className="pt-6">
-            <p className="text-white/60 text-xs md:text-sm uppercase tracking-[0.2em] mb-5">
+          <div className="pt-4 border-t border-border/60">
+            <p className="text-muted-foreground text-xs uppercase tracking-[0.2em] mt-6 mb-5">
               What happens next
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {steps.map((step, index) => {
                 const Icon = step.icon;
                 return (
                   <div
                     key={index}
-                    className="rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 p-5 text-left transition-colors hover:bg-white/[0.14]"
+                    className="rounded-xl bg-muted/50 border border-border/60 p-4 text-left transition-colors hover:bg-muted"
                   >
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/20 text-primary font-bold">
+                    <div className="flex items-center gap-2.5 mb-2.5">
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary text-sm font-bold">
                         {index + 1}
                       </span>
-                      <Icon className="h-5 w-5 text-white/80" />
+                      <Icon className="h-4 w-4 text-muted-foreground" />
                     </div>
-                    <h3 className="text-white font-semibold text-sm mb-1">
-                      {step.title}
-                    </h3>
-                    <p className="text-white/70 text-sm leading-relaxed">
+                    <h3 className="font-semibold text-sm mb-1">{step.title}</h3>
+                    <p className="text-muted-foreground text-[13px] leading-relaxed">
                       {step.desc}
                     </p>
                   </div>
@@ -134,16 +127,16 @@ const ThankYou = () => {
           </div>
 
           {/* Reassurance / contact line */}
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-white/70 text-sm pt-2">
-            <span className="inline-flex items-center gap-2">
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-muted-foreground text-[13px] pt-1">
+            <span className="inline-flex items-center gap-1.5">
               <MapPin className="h-4 w-4 text-primary" />
               Colorado &amp; surrounding areas
             </span>
-            <span className="inline-flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5">
               <Mail className="h-4 w-4 text-primary" />
               handshands.contact@gmail.com
             </span>
-            <span className="inline-flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5">
               <Phone className="h-4 w-4 text-primary" />
               24/7 emergency service
             </span>

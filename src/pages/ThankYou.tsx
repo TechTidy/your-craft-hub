@@ -4,6 +4,7 @@ import {
   CheckCircle2,
   Phone,
   ArrowLeft,
+  MessageCircle,
   ClipboardCheck,
   PhoneCall,
   CalendarCheck,
@@ -57,18 +58,25 @@ const ThankYou = () => {
 
       {/* White content card floating over the hero background */}
       <div className="relative z-10 w-full max-w-2xl">
-        <div className="rounded-2xl bg-card border border-border/50 shadow-2xl p-8 md:p-12 text-center space-y-7 animate-fade-in">
+        <div className="rounded-2xl bg-card border border-border/50 shadow-2xl p-8 md:p-12 text-center space-y-7">
           <img
             src={logoColor}
             alt="Hands-Hands"
-            className="h-11 md:h-12 w-auto mx-auto"
+            className="h-11 md:h-12 w-auto mx-auto animate-fade-up"
           />
 
-          <div className="inline-flex p-4 rounded-full bg-primary/10 text-primary ring-1 ring-primary/20">
-            <CheckCircle2 className="h-12 w-12" />
+          {/* Success check with pop-in + expanding ring */}
+          <div className="relative inline-flex animate-pop-in">
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 rounded-full bg-primary/30 animate-success-ring"
+            />
+            <div className="relative inline-flex p-4 rounded-full bg-primary/10 text-primary ring-1 ring-primary/20">
+              <CheckCircle2 className="h-12 w-12" />
+            </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3 animate-fade-up" style={{ animationDelay: "0.15s" }}>
             <h1 className="text-3xl md:text-5xl font-bold leading-tight">
               Thank{" "}
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -76,29 +84,57 @@ const ThankYou = () => {
               </span>
             </h1>
             <p className="text-muted-foreground text-base md:text-lg max-w-md mx-auto">
-              Your request was received. Our team will contact you shortly to
-              confirm the details and schedule your service.
+              Your request was received. Want faster service? Call or message us
+              now — we answer 24/7 and can often help the same day.
             </p>
           </div>
 
-          {/* Primary CTA (call) + secondary (home) */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-            <Button size="lg" asChild className="group shadow-md w-full sm:w-auto">
+          {/* Contact CTAs — the primary call button pulses to draw attention */}
+          <div
+            className="flex flex-col sm:flex-row gap-3 justify-center items-center animate-fade-up"
+            style={{ animationDelay: "0.3s" }}
+          >
+            <Button
+              size="lg"
+              asChild
+              className="group w-full sm:w-auto shadow-md animate-cta-pulse"
+            >
               <a href="tel:+17202557466">
-                <Phone className="mr-2 h-4 w-4" />
+                <Phone className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" />
                 Call +1 (720) 255-7466
               </a>
             </Button>
-            <Button size="lg" variant="outline" asChild className="w-full sm:w-auto">
-              <Link to="/">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Home
-              </Link>
+            <Button
+              size="lg"
+              asChild
+              className="w-full sm:w-auto bg-[#25D366] text-white hover:bg-[#1ebe5d] shadow-md"
+            >
+              <a
+                href="https://wa.me/17202557466"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <MessageCircle className="mr-2 h-4 w-4" />
+                WhatsApp us
+              </a>
             </Button>
           </div>
 
+          <div className="animate-fade-up" style={{ animationDelay: "0.4s" }}>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Home
+            </Link>
+          </div>
+
           {/* What happens next */}
-          <div className="pt-4 border-t border-border/60">
+          <div
+            className="pt-4 border-t border-border/60 animate-fade-up"
+            style={{ animationDelay: "0.5s" }}
+          >
             <p className="text-muted-foreground text-xs uppercase tracking-[0.2em] mt-6 mb-5">
               What happens next
             </p>
@@ -108,7 +144,8 @@ const ThankYou = () => {
                 return (
                   <div
                     key={index}
-                    className="rounded-xl bg-muted/50 border border-border/60 p-4 text-left transition-colors hover:bg-muted"
+                    className="rounded-xl bg-muted/50 border border-border/60 p-4 text-left transition-colors hover:bg-muted animate-fade-up"
+                    style={{ animationDelay: `${0.55 + index * 0.1}s` }}
                   >
                     <div className="flex items-center gap-2.5 mb-2.5">
                       <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary text-sm font-bold">
@@ -127,7 +164,10 @@ const ThankYou = () => {
           </div>
 
           {/* Reassurance / contact line */}
-          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-muted-foreground text-[13px] pt-1">
+          <div
+            className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-muted-foreground text-[13px] pt-1 animate-fade-up"
+            style={{ animationDelay: "0.9s" }}
+          >
             <span className="inline-flex items-center gap-1.5">
               <MapPin className="h-4 w-4 text-primary" />
               Colorado &amp; surrounding areas

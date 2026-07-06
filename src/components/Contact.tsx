@@ -18,6 +18,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { sendContactSMS } from "@/utils/api";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const TURNSTILE_TEST_SITE_KEYS = {
   pass: "1x00000000000000000000AA",
@@ -86,6 +87,7 @@ const formSchema = z.object({
 
 const Contact = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
   const [turnstileReady, setTurnstileReady] = useState(false);
@@ -220,15 +222,13 @@ const Contact = () => {
       });
 
       if (result.success) {
-        toast({
-          title: "Message sent successfully",
-          description: "We will contact you soon. Thank you!",
-          variant: "default",
-        });
-
         form.reset();
         setTurnstileError("");
         resetTurnstile();
+
+        // Redirect to the thank-you page. This is the main conversion signal:
+        // the /gracias page fires the Google Ads conversion event on mount.
+        navigate("/gracias");
       } else {
         let errorDescription = result.error || "Please try again later.";
 

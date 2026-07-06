@@ -29,30 +29,31 @@ const Hero = () => {
       <div className="container mx-auto px-4 z-10 text-center">
         <div className="max-w-4xl mx-auto space-y-6">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight animate-fade-in">
-            Professional Cleaning and{" "}
+            Carpet Cleaning &{" "}
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Restoration
+              Water Damage Restoration
             </span>
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Specialized cleaning and restoration services for business and residential properties. We transform spaces with
-            quality, professionalism, and total commitment.
+            Fast, professional cleaning and water extraction across Colorado. Free
+            quote, same-day response, and 24/7 emergency service you can trust.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
             <Button
               size="lg"
-              onClick={() => scrollToSection("reviews")}
-              className="group"
+              onClick={() => scrollToSection("contacto")}
+              className="group shadow-lg"
             >
-              View Projects
+              Contact Now
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button
               size="lg"
-              variant="secondary"
-              onClick={() => scrollToSection("contacto")}
+              variant="outline"
+              onClick={() => scrollToSection("reviews")}
+              className="bg-transparent text-white border-white/70 hover:bg-white hover:text-foreground"
             >
-              Contact Now
+              View Projects
             </Button>
           </div>
         </div>

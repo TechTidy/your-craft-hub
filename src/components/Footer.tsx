@@ -1,4 +1,4 @@
-import logoWhite from "@/assets/logo-white_resize.svg";
+import handshandsLogo from "@/assets/handshands-logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -13,10 +13,10 @@ const Footer = () => {
             </p>
           </div>
           <div className="flex justify-center">
-            <img 
-              src={logoWhite} 
-              alt="Hands-Hands Cleaning & Restoration Services" 
-              className="h-24 w-auto"
+            <img
+              src={handshandsLogo}
+              alt="Hands-Hands Carpet Cleaning & Water Extraction"
+              className="h-16 w-auto max-w-full"
             />
           </div>
           <div className="text-center md:text-right">

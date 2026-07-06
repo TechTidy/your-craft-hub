@@ -119,4 +119,49 @@ All colors MUST be HSL.
       transform: translateY(0);
     }
   }
+
+  /* --- Thank-you page: conversion-oriented micro-animations --- */
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-pop-in {
+    animation: popIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.5); }
+    60% { opacity: 1; transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  /* Expanding success ring behind the check icon */
+  .animate-success-ring {
+    animation: successRing 1.8s ease-out 0.3s infinite;
+  }
+  @keyframes successRing {
+    0% { opacity: 0.5; transform: scale(0.75); }
+    100% { opacity: 0; transform: scale(2.1); }
+  }
+
+  /* Gentle attention pulse to draw the eye to the primary contact CTA */
+  .animate-cta-pulse {
+    animation: ctaPulse 2.2s ease-in-out 1s infinite;
+  }
+  @keyframes ctaPulse {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.5); }
+    50% { box-shadow: 0 0 0 12px hsl(var(--primary) / 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-up,
+    .animate-pop-in,
+    .animate-success-ring,
+    .animate-cta-pulse {
+      animation: none;
+    }
+  }
 }
